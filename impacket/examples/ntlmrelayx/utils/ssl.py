@@ -31,7 +31,7 @@ from impacket import LOG
 def generateImpacketCert(certname='/tmp/impacket.crt'):
     # Create a private key
     pkey = crypto.PKey()
-    pkey.generate_key(crypto.TYPE_RSA, 2048)
+    pkey.generate_key(crypto.TYPE_RSA, 4096)
 
     # Create the certificate
     cert = crypto.X509()
@@ -40,6 +40,7 @@ def generateImpacketCert(certname='/tmp/impacket.crt'):
     cert.gmtime_adj_notAfter(60*60*24*365*5)
     subj = cert.get_subject()
     subj.CN = 'impacket'
+    cert.set_issuer(subj)
     cert.set_pubkey(pkey)
     cert.sign(pkey, "sha256")
     # We write both from the same file
